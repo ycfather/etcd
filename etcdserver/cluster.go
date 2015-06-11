@@ -20,6 +20,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"log"
 	"path"
 	"reflect"
 	"sort"
@@ -108,6 +109,7 @@ func (c *cluster) ID() types.ID { return c.id }
 func (c *cluster) Members() []*Member {
 	c.Lock()
 	defer c.Unlock()
+	log.Printf("cluster when call Members: %s", c)
 	var ms MembersByID
 	for _, m := range c.members {
 		ms = append(ms, m.Clone())
@@ -313,6 +315,7 @@ func (c *cluster) RemoveMember(id types.ID) {
 		plog.Panicf("create removedMember should never fail: %v", err)
 	}
 	c.removed[id] = true
+	log.Printf("cluster after remove member: %s", c)
 }
 
 func (c *cluster) UpdateAttributes(id types.ID, attr Attributes) {
@@ -328,6 +331,7 @@ func (c *cluster) UpdateAttributes(id types.ID, attr Attributes) {
 	} else {
 		plog.Panicf("error updating attributes of unknown member %s", id)
 	}
+	log.Printf("cluster after update attributes: %s", c)
 	// TODO: update store in this function
 }
 
