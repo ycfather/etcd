@@ -538,10 +538,11 @@ func (c *cluster) waitMembersMatch(t *testing.T, membs []client.Member) {
 			ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 			ms, err := ma.List(ctx)
 			cancel()
+			log.Printf("got = %+v, want = %+v", ms, membs)
 			if err == nil && isMembersEqual(ms, membs) {
 				break
 			}
-			time.Sleep(tickDuration)
+			time.Sleep(100 * tickDuration)
 		}
 	}
 	return
