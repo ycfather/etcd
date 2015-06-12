@@ -107,7 +107,7 @@ func newCluster(token string) *cluster {
 func (c *cluster) ID() types.ID { return c.id }
 
 func (c *cluster) Members() []*Member {
-	log.Printf("cluster when call Members: %s", c)
+	log.Printf("cluster %p when call Members: %s", c, c)
 	c.Lock()
 	defer c.Unlock()
 	var ms MembersByID
@@ -307,7 +307,7 @@ func (c *cluster) AddMember(m *Member) {
 func (c *cluster) RemoveMember(id types.ID) {
 	c.Lock()
 	defer func(c *cluster) {
-		log.Printf("cluster after remove member: %s", c)
+		log.Printf("cluster %p after remove member: %s", c, c)
 	}(c)
 	defer c.Unlock()
 	if _, err := c.store.Delete(memberStoreKey(id), true, true); err != nil {
@@ -323,7 +323,7 @@ func (c *cluster) RemoveMember(id types.ID) {
 func (c *cluster) UpdateAttributes(id types.ID, attr Attributes) {
 	c.Lock()
 	defer func(c *cluster) {
-		log.Printf("cluster after update attributes: %s", c)
+		log.Printf("cluster %p after update attributes: %s", c, c)
 	}(c)
 	defer c.Unlock()
 	if m, ok := c.members[id]; ok {
